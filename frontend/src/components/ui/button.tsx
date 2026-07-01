@@ -7,18 +7,16 @@ type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-xl font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-zinc-500";
+  "inline-flex items-center justify-center gap-2 rounded-xl font-medium whitespace-nowrap transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50";
 
 const variantStyles: Record<Variant, string> = {
   primary:
-    "bg-foreground text-background hover:bg-zinc-700 dark:hover:bg-zinc-200",
+    "bg-gradient-to-r from-accent to-violet text-white shadow-sm hover:opacity-90",
   secondary:
-    "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-700",
-  outline:
-    "border border-zinc-300 text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900",
-  ghost:
-    "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800",
-  danger: "bg-red-600 text-white hover:bg-red-700",
+    "border border-border bg-white/[0.04] text-foreground hover:bg-white/[0.08]",
+  outline: "border border-border text-foreground hover:bg-white/[0.04]",
+  ghost: "text-muted hover:bg-white/[0.05] hover:text-foreground",
+  danger: "bg-red-600 text-white hover:bg-red-500",
 };
 
 const sizeStyles: Record<Size, string> = {

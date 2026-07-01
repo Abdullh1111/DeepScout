@@ -35,7 +35,7 @@ export function Input({
       {label && (
         <label
           htmlFor={inputId}
-          className="text-sm font-medium text-zinc-800 dark:text-zinc-200"
+          className="text-xs font-medium uppercase tracking-wide text-muted"
         >
           {label}
         </label>
@@ -43,7 +43,7 @@ export function Input({
 
       <div className="relative flex items-center">
         {leftAddon && (
-          <span className="pointer-events-none absolute left-3 text-zinc-400">
+          <span className="pointer-events-none absolute left-3 text-muted">
             {leftAddon}
           </span>
         )}
@@ -53,12 +53,12 @@ export function Input({
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
           className={cn(
-            "h-11 w-full rounded-xl border bg-white px-3.5 text-sm text-zinc-900 shadow-sm outline-none transition-colors placeholder:text-zinc-400",
-            "focus:ring-2 focus:ring-zinc-200 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:ring-zinc-800",
+            "h-11 w-full rounded-xl border bg-input px-3.5 text-sm text-foreground outline-none transition placeholder:text-muted",
+            "focus:ring-2 focus:ring-accent/30",
             leftAddon ? "pl-9" : null,
             error
-              ? "border-red-400 focus:ring-red-100 dark:border-red-500/70 dark:focus:ring-red-950"
-              : "border-zinc-300 focus:border-zinc-400 dark:border-zinc-700",
+              ? "border-red-500/70 focus:border-red-500 focus:ring-red-500/20"
+              : "border-border-strong focus:border-accent",
             className,
           )}
           {...props}
@@ -66,11 +66,11 @@ export function Input({
       </div>
 
       {error ? (
-        <p id={`${inputId}-error`} className="text-xs text-red-600 dark:text-red-400">
+        <p id={`${inputId}-error`} className="text-xs text-red-400">
           {error}
         </p>
       ) : hint ? (
-        <p id={`${inputId}-hint`} className="text-xs text-zinc-500">
+        <p id={`${inputId}-hint`} className="text-xs text-muted">
           {hint}
         </p>
       ) : null}

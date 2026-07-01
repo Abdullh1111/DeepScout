@@ -4,10 +4,11 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
 import { AuthLayout } from "@/components/layout";
-import { Button, Divider, Field, Input } from "@/components/ui";
+import { Button, Divider, Input } from "@/components/ui";
 import { GoogleIcon } from "@/components/icons";
 
-export default function SignInPage() {
+export default function SignUpPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -17,8 +18,8 @@ export default function SignInPage() {
     event.preventDefault();
     setError(null);
 
-    if (!email || !password) {
-      setError("Please enter your email and password.");
+    if (!name || !email || !password) {
+      setError("Please fill in every field.");
       return;
     }
 
@@ -35,13 +36,13 @@ export default function SignInPage() {
 
   return (
     <AuthLayout
-      title="Sign in to DeepScout"
-      subtitle="Plan, search & write cited research"
+      title="Create your account"
+      subtitle="Start researching in minutes"
       footer={
         <>
-          No account?{" "}
-          <Link href="/signup" className="font-medium text-link hover:underline">
-            Sign up
+          Already have an account?{" "}
+          <Link href="/signin" className="font-medium text-link hover:underline">
+            Sign in
           </Link>
         </>
       }
@@ -58,6 +59,15 @@ export default function SignInPage() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <Input
+          label="Name"
+          name="name"
+          autoComplete="name"
+          placeholder="Your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <Input
           label="Email"
           type="email"
           name="email"
@@ -67,30 +77,16 @@ export default function SignInPage() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-
-        <Field
+        <Input
           label="Password"
-          htmlFor="password"
-          action={
-            <Link
-              href="/forgot-password"
-              className="text-xs font-medium text-link hover:underline"
-            >
-              Forgot?
-            </Link>
-          }
-        >
-          <Input
-            id="password"
-            type="password"
-            name="password"
-            autoComplete="current-password"
-            placeholder="••••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </Field>
+          type="password"
+          name="password"
+          autoComplete="new-password"
+          placeholder="••••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
         {error && (
           <p className="text-sm text-red-400" role="alert">
@@ -99,7 +95,7 @@ export default function SignInPage() {
         )}
 
         <Button type="submit" loading={submitting} className="mt-1 w-full">
-          {submitting ? "Signing in…" : "Sign in"}
+          {submitting ? "Creating account…" : "Create account"}
         </Button>
       </form>
     </AuthLayout>

@@ -3,16 +3,22 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AuthLayout } from "@/components/layout";
-import { Button, Divider, Input } from "@/components/ui";
-import { GoogleIcon } from "@/components/icons";
+import { Button, Input } from "@/components/ui";
+import { useRegisterMutation } from "@/redux/api/authApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { setCredentials } from "@/redux/features/auth/authSlice";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [register, { isLoading }] = useRegisterMutation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -23,14 +29,15 @@ export default function SignUpPage() {
       return;
     }
 
-    setSubmitting(true);
     try {
-      // TODO: wire up to the auth endpoint
-      await new Promise((resolve) => setTimeout(resolve, 800));
-    } catch {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
+      const res = await register({ name, email, password }).unwrap();
+      dispatch(setCredentials(res));
+      router.push("/");
+    } catch (err) {
+      const apiError = err as { status?: number; data?: { message?: string } };
+      setError(
+        apiError.data?.message ?? "Something went wrong. Please try again.",
+      );
     }
   }
 
@@ -47,17 +54,11 @@ export default function SignUpPage() {
         </>
       }
     >
-      <Button
-        variant="secondary"
-        className="mt-8 w-full"
-        leftIcon={<GoogleIcon />}
+      <form
+        onSubmit={handleSubmit}
+        className="mt-8 flex flex-col gap-4"
+        noValidate
       >
-        Continue with Google
-      </Button>
-
-      <Divider className="my-5">or</Divider>
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <Input
           label="Name"
           name="name"
@@ -94,8 +95,8 @@ export default function SignUpPage() {
           </p>
         )}
 
-        <Button type="submit" loading={submitting} className="mt-1 w-full">
-          {submitting ? "Creating account…" : "Create account"}
+        <Button type="submit" loading={isLoading} className="mt-1 w-full">
+          {isLoading ? "Creating account…" : "Create account"}
         </Button>
       </form>
     </AuthLayout>
